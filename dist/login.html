@@ -7,6 +7,8 @@
 <meta name="description" content="" />
 <link rel="stylesheet" type="text/css" href="css/public.css" />
 <link rel="stylesheet" type="text/css" href="css/register.css" />
+
+<script src="js/require.js" defer async="true" data-main="js/main3.js"></script>
 </head>
 <body>
 	<div class="header_wrap">
@@ -33,11 +35,11 @@
 	<div style="margin-top:55px;"></div>
 	<div id="register" class="auto">
 		<h2>欢迎登录 我的家 会员</h2>
-		<form method="POST" action="">
-			<label>用户名：<input type="text"  /><span></span></label>
-			<label>密码：<input type="password"  /><span></span></label>
-			<label>确认密码：<input type="password"  /><span></span></label>
-			<label>验证码：<input name="vcode" type="text" placeholder="请输入下方的验证码" /><span></span></label>
+		<form method="POST" action="php/login.php">
+			<label>用户名：<input type="text"  id="username" name="username"/><span></span></label>
+			<label>密码：<input type="password"  id="password" name="password"/><span></span></label>
+			<label>确认密码：<input type="password"   name="confirmPassword"/><span></span></label>
+			<label>验证码：<input name="vcode" type="text" placeholder="请输入下方的验证码"  name="vcode"/><span></span></label>
 			<img class="vcode" src="images/show_code.php.jpg" />
 			<label>自动登录：
 				<select style="width:236px;height:25px;" name="time">
@@ -50,7 +52,7 @@
 				<span>*公共电脑上请勿长期自动登录</span>
 			</label>
 			<div style="clear:both;"></div>
-			<input class="submit" type="submit" value="确定登录" />
+			<input class="submit" type="submit" value="确定登录"  id="login-button"/>
 		</form>
 	</div>
 	<div id="footer" class="auto">

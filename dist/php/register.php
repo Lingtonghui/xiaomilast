@@ -123,15 +123,18 @@ if(!$link){
 
 mysqli_set_charset($link,"utf-8");
 
-mysqli_select_db($link,"sfkbbs");
+mysqli_select_db($link,"xiaomi");
 
 
 //准备sql语句验证之前是否验证过
 
-$sql1 ="SELECT * FROM xiaomiusers WHERE username='{$username}' ";
+$sql1 ="SELECT  * FROM users WHERE username='{$username}' ";
 
-
+// var_dump($sql1);
 //发送sql语句
+
+
+//插入了两次    为什么
 
 $res=mysqli_query($link,$sql1);
 
@@ -140,38 +143,79 @@ $res=mysqli_query($link,$sql1);
 $row=mysqli_fetch_assoc($res);
 // var_dump($row);
 
-if($row){
-    $responseData["code"]=7;
-    $responseData["message"]="用户名重名";
+// if(!$row){
+//     $responseData["code"]=7;
+//     $responseData["message"]="用户名重名";
     
     
-    //将数据按照统一的格式返回
-    echo json_encode($responseData);
-    exit;
+//     //将数据按照统一的格式返回
+//     echo json_encode($responseData);
+//     exit;
+    
+
+//         $sql2 ="insert into users(username,password,telephone) VALUES('{$username}','{$password}','{$telephone}')";
+//         // var_dump($sql2);
+
+//         $res2=mysqli_query($link,$sql2);
+
+
+//         if(!$res2){
+//             $responseData["code"]=8;
+//             $responseData["message"]="insert false";
+            
+            
+//             //将数据按照统一的格式返回
+//             echo json_encode($responseData);
+//             exit;
+//         }
+        
+//         $responseData["message"]="insert ok";
+//         echo json_encode($responseData);
+
+//  }
+
+
+
+if(!$row){
+    /*
+        密码要加密
+    */
+
+    //准备sql语句进行注册
+    $sql2 ="insert into users(username,password,telephone) VALUES('{$username}','{$password}','{$telephone}')";
+   
+    $res2=mysqli_query($link,$sql2);
+    if($res2){
+        $responseData['message'] = "注册成功";
+        echo json_encode($responseData);
+    }else{
+        $responseData['code'] = 9;
+        $responseData['message'] = "注册失败";
+        echo json_encode($responseData);
+    }
 }
 
+//  
 //注册
 
 //密码要加密
 
 
-$sql2 ="insert into xiaomiusers(username,password,telephone) VALUES('{$username}','{$password}','{$telephone}')";
-
-$res2=mysqli_query($link,$sql2);
 
 
-if(!$res2){
-    $responseData["code"]=8;
-    $responseData["message"]="insert false";
+
+// if(!$res2){                                      
+//     $responseData["code"]=8;
+//     $responseData["message"]="insert false";
     
     
-    //将数据按照统一的格式返回
-    echo json_encode($responseData);
-    exit;
-}
+//     //将数据按照统一的格式返回                      
+//     echo json_encode($responseData);
+//     exit;
+// }
 
-$responseData["message"]="insert ok";
-echo json_encode($responseData);
+// $responseData["message"]="insert ok";
+// echo json_encode($responseData);
 
 
 
@@ -196,11 +240,11 @@ exit();
 }
 
 if(mysqli_affected_rows($link)==1){
-    setcookie('xiaomiusers[name]',$username);
-    setcookie('xiaomiusers[pw]',sha1(md5($password)));
-    skip('../register.html','ok','注册成功！');
+    setcookie('users[name]',$username);
+    setcookie('users[pw]',sha1(md5($password)));
+    skip('../login.html','ok','注册成功！');
 }else{
-    skip('../register.html','eror','注册失败,请重试！');
+    skip('../login.html','eror','注册失败,请重试！');
 }
 
 

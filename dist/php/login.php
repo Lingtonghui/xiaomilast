@@ -89,17 +89,19 @@ if(!$link){
 
 mysqli_set_charset($link,"utf-8");
 
-mysqli_select_db($link,"sfkbbs");
+mysqli_select_db($link,"xiaomi");
 
 
 //准备sql语句验证之前是否验证过
 
-$sql1 ="SELECT * FROM xiaomiusers WHERE username='{$username}' AND  password='{$password}'  ";
+$sql1 ="SELECT * FROM users WHERE username='{$username}' AND  password='{$password}'  ";
 
 
 //发送sql语句
 
 $res=mysqli_query($link,$sql1);
+
+// var_dump($res);
 
 // var_dump($res);
 
@@ -115,12 +117,14 @@ if(!$row){
     echo json_encode($responseData);
     exit;
 }else{
-    $responseData["message"]="登录成功";
+    if(mysqli_affected_rows($link)==1){
+        setcookie('users[name]',$username);
+        setcookie('users[pw]',sha1(md5($password)));
+        skip('../index.html','ok','登录成功！');
+    }else{
+        skip('../login.html','eror','登录失败,请重试！');
+    }
     
-    
-    //将数据按照统一的格式返回
-    echo json_encode($responseData);
-    exit;
 }
 
 //注册
@@ -150,13 +154,13 @@ echo $html;
 exit();
 }
 
-if(mysqli_affected_rows($link)==1){
-    setcookie('xiaomiusers[name]',$username);
-    setcookie('xiaomiusers[pw]',sha1(md5($password)));
-    skip('../register.html','ok','注册成功！');
-}else{
-    skip('../register.html','eror','注册失败,请重试！');
-}
+// if(mysqli_affected_rows($link)==1){
+//     setcookie('users[name]',$username);
+//     setcookie('users[pw]',sha1(md5($password)));
+//     skip('../index.html','ok','登录成功！');
+// }else{
+//     skip('../login.html','eror','登录失败,请重试！');
+// }
 
 
 
